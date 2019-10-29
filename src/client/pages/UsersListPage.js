@@ -1,17 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { fetchUsers } from "../actions";
+import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-
-const GET_USERS = gql`
-  {
-    users {
-      id
-      name
-    }
-  }
-`;
+import GET_USERS from "../../graphql/queries/getUsers";
 
 const UsersListPage = () => {
   const { loading, error, data } = useQuery(GET_USERS);

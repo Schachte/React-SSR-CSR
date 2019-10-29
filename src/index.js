@@ -1,7 +1,6 @@
 import "babel-polyfill";
 import express from "express";
 import renderer from "./helpers/renderer";
-import createStore from "./helpers/createStore";
 import { matchRoutes } from "react-router-config";
 import routes from "./client/Routes";
 import proxy from "express-http-proxy";
@@ -27,7 +26,7 @@ app.use(express.static("public"));
  * From each respective component, we ensure that we call the proper loadData function to load the component state into the redux store.
  */
 app.get("/", (req, res) => {
-  const store = createStore(req);
+  // const store = createStore(req);
   /**
    * We are going to read the route that the user is requesting,
    * then from there we are going to loop through all the relevant components
@@ -35,11 +34,13 @@ app.get("/", (req, res) => {
    */
 
   const promises = matchRoutes(routes, req.path).map(({ route }) => {
-    return route.loadData ? route.loadData(store) : null;
+    // Need to populate the apollo cache here
+    return null;
+    // return route.loadData ? route.loadData(store) : null;
   });
 
   Promise.all(promises).then(() => {
-    res.send(renderer(req, store));
+    res.send(renderer(req));
   });
 });
 

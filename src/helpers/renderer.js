@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { renderRoutes } from "react-router-config";
 import serialize from "serialize-javascript";
 
-export default (req, store) => {
+export default req => {
   // Enables rendering all relevant components into HTML to send back to the client
   const content = renderToString(
     <StaticRouter location={req.path} context={{}}>
@@ -25,7 +25,6 @@ export default (req, store) => {
         </div>
         <script>
           // Going to want to serialize the apollo cache instead of the store
-          // window.INITIAL_STATE = ${serialize(store.getState())}
         </script>
         <script src="bundle.js"></script>
       </body>

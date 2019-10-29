@@ -1,18 +1,8 @@
-import React, { Component } from "react";
-import gql from "graphql-tag";
+import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-
-const GET_USERS = gql`
-  {
-    users {
-      id
-      name
-    }
-  }
-`;
+import GET_USERS from "../../graphql/queries/getUsers";
 
 export default function QueryExample() {
-  console.log("fuckh");
   const { loading, error, data } = useQuery(GET_USERS);
   if (loading) {
     return (
