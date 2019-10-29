@@ -3,12 +3,17 @@ import { renderRoutes } from "react-router-config";
 import Header from "./components/Header";
 import { fetchCurrentUser } from "./actions/";
 
+import { ApolloProvider } from "react-apollo";
+import client from "./Apollo";
+
 const App = ({ route }) => {
   return (
-    <div>
-      <Header />
-      {renderRoutes(route.routes)}
-    </div>
+    <ApolloProvider client={client}>
+      <div>
+        <Header />
+        {renderRoutes(route.routes)}
+      </div>
+    </ApolloProvider>
   );
 };
 

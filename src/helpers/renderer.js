@@ -9,16 +9,10 @@ import serialize from "serialize-javascript";
 export default (req, store) => {
   // Enables rendering all relevant components into HTML to send back to the client
   const content = renderToString(
-    <Provider store={store}>
-      {/* Location is going to state what path we are currently at while renderRoutes will render the components associated with the path */}
-      <StaticRouter location={req.path} context={{}}>
-        <div>{renderRoutes(Routes)}</div>
-      </StaticRouter>
-    </Provider>
+    <StaticRouter location={req.path} context={{}}>
+      <div>{renderRoutes(Routes)}</div>
+    </StaticRouter>
   );
-
-  // This is the prerendered serverside component we will send back to the client
-  // The content is dynamic based on the route that is being called at the given time.
 
   // We will take the contents of the redux store and serialize it as a global back to the client to help rehydrate the view
   const html = `
@@ -30,7 +24,8 @@ export default (req, store) => {
           ${content}
         </div>
         <script>
-          window.INITIAL_STATE = ${serialize(store.getState())}
+          // Going to want to serialize the apollo cache instead of the store
+          // window.INITIAL_STATE = ${serialize(store.getState())}
         </script>
         <script src="bundle.js"></script>
       </body>

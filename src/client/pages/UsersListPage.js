@@ -1,43 +1,46 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchUsers } from "../actions";
+import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
 
-class UsersListPage extends Component {
-  componentDidMount() {
-    console.log("This component mounted");
-    this.props.fetchUsers();
+const GET_USERS = gql`
+  {
+    users {
+      id
+      name
+    }
   }
+`;
 
-  renderUsers() {
-    return this.props.users.map(user => {
-      return <li key={user.id}>{user.name}</li>;
-    });
-  }
+const UsersListPage = () => {
+  const { loading, error, data } = useQuery(GET_USERS);
+  const renderUsers = () => {
+    if (!loading && !error) {
+      return data.users.map(user => {
+        return <li key={user.id}>{user.name}</li>;
+      });
+    }
+    return <div>noithing</div>;
+  };
 
-  render() {
-    return (
-      <div>
-        User List:
-        <ul>{this.renderUsers()}</ul>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      User List:
+      <ul>{renderUsers()}</ul>
+    </div>
+  );
+};
 
-function mapStateToProps(state) {
-  const { users } = state;
-  return { users };
-}
-
-// The load data function effectively mimicks the neceesity of loading data into the component from a componentDidMount, but from a serverside perspective
-function loadData(store) {
-  return store.dispatch(fetchUsers());
+/**
+ *
+ * @param {Used to populate the serverside apollo cache} cache
+ */
+function loadData(cache) {
+  return {};
 }
 
 export default {
   loadData,
-  component: connect(
-    mapStateToProps,
-    { fetchUsers }
-  )(UsersListPage)
+  component: UsersListPage
 };

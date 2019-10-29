@@ -14,8 +14,6 @@ import axios from "axios";
 const axiosInstance = axios.create({
   baseURL: "/api"
 });
-console.log("The initial state is");
-console.log(window.INITIAL_STATE);
 
 const store = createStore(
   reducers,
@@ -27,8 +25,6 @@ const store = createStore(
 ReactDOM.hydrate(
   <Provider store={store}>
     <BrowserRouter>
-      {/* This is where we load the main app component since it exists at the root
-      in the router config */}
       <div>{renderRoutes(Routes)}</div>
     </BrowserRouter>
   </Provider>,

@@ -26,7 +26,7 @@ app.use(express.static("public"));
  *
  * From each respective component, we ensure that we call the proper loadData function to load the component state into the redux store.
  */
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   const store = createStore(req);
   /**
    * We are going to read the route that the user is requesting,
@@ -34,7 +34,6 @@ app.get("*", (req, res) => {
    * and load their data into the redux store
    */
 
-  console.log(req.path);
   const promises = matchRoutes(routes, req.path).map(({ route }) => {
     return route.loadData ? route.loadData(store) : null;
   });
@@ -42,6 +41,16 @@ app.get("*", (req, res) => {
   Promise.all(promises).then(() => {
     res.send(renderer(req, store));
   });
+});
+
+app.get("/users", (req, res) => {
+  res.send([
+    { id: 1, name: "Leanne Grahams" },
+    { id: 2, name: "Ervin Howell" },
+    { id: 3, name: "Clementine Bauch" },
+    { id: 4, name: "Patricia Lebsack" },
+    { id: 5, name: "Chelsey Dietrich" }
+  ]);
 });
 
 app.listen(3000, () => console.log("App is running on port 3000"));
