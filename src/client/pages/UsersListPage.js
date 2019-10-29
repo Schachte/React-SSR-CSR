@@ -10,7 +10,7 @@ const UsersListPage = () => {
         return <li key={user.id}>{user.name}</li>;
       });
     }
-    return <div>noithing</div>;
+    return <div>Nothing</div>;
   };
 
   return (
@@ -21,15 +21,6 @@ const UsersListPage = () => {
   );
 };
 
-/**
- *
- * @param {Used to populate the serverside apollo cache} cache
- */
-function loadData(cache) {
-  return {};
-}
-
 export default {
-  loadData,
   component: UsersListPage
 };

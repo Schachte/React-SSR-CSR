@@ -2,8 +2,9 @@ import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import GET_USERS from "../../graphql/queries/getUsers";
 
-export default function QueryExample() {
+const QueryExample = () => {
   const { loading, error, data } = useQuery(GET_USERS);
+
   if (loading) {
     return (
       <div>
@@ -14,7 +15,7 @@ export default function QueryExample() {
   if (error) {
     return (
       <div>
-        <p>ERROR...</p>
+        <p>Err...</p>
       </div>
     );
   }
@@ -23,10 +24,12 @@ export default function QueryExample() {
       {data.users.map(user => {
         return (
           <div>
-            <li>{user.name}</li>
+            <li key={user.id}>{user.name}</li>
           </div>
         );
       })}
     </ul>
   );
-}
+};
+
+export default QueryExample;

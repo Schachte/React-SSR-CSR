@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Header = ({ auth }) => {
+const Header = () => {
   return (
     <div>
       <Link to="/">Home Component</Link>

@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import Routes from "./Routes";
 import { renderRoutes } from "react-router-config";
 
-// Hydrates the view
+console.log("This is getting called");
 ReactDOM.hydrate(
   <BrowserRouter>
     <div>{renderRoutes(Routes)}</div>

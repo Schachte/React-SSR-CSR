@@ -1,35 +1,51 @@
 import React from "react";
+import Routes from "../client/Routes";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
-import Routes from "../client/Routes";
-import { Provider } from "react-redux";
 import { renderRoutes } from "react-router-config";
 import serialize from "serialize-javascript";
+import initApolloClient from "../helpers/createCache";
+import { getDataFromTree } from "@apollo/react-ssr";
+import App from "../client/App";
+import { ApolloProvider } from "react-apollo";
+import { renderToStaticMarkup } from "react-dom/server";
 
-export default req => {
-  // Enables rendering all relevant components into HTML to send back to the client
-  const content = renderToString(
-    <StaticRouter location={req.path} context={{}}>
-      <div>{renderRoutes(Routes)}</div>
-    </StaticRouter>
+export default (req, res) => {
+  const client = initApolloClient({ isServerSide: true });
+  const App = (
+    <ApolloProvider client={client}>
+      <StaticRouter location={req.path} context={{}}>
+        <div>{renderRoutes(Routes)}</div>
+      </StaticRouter>
+    </ApolloProvider>
   );
 
-  // We will take the contents of the redux store and serialize it as a global back to the client to help rehydrate the view
-  const html = `
-    <html>
-      <head>
-      </head>
-      <body>
-        <div id="root">
-          ${content}
-        </div>
-        <script>
-          // Going to want to serialize the apollo cache instead of the store
-        </script>
-        <script src="bundle.js"></script>
-      </body>
-    </html>
-  `;
+  const Html = ({ content, state }) => {
+    return (
+      <html>
+        <body>
+          <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.__APOLLO_STATE__=${JSON.stringify(state).replace(
+                /</g,
+                "\\u003c"
+              )};`
+            }}
+          />
+        </body>
+      </html>
+    );
+  };
 
-  return html;
+  return getDataFromTree(App).then(() => {
+    const content = renderToString(App);
+    const initialState = client.extract();
+    console.log(initialState);
+    const html = <Html content={content} state={initialState} />;
+    console.log(initialState);
+    res.status(200);
+    res.send(`<!doctype html>\n${renderToStaticMarkup(html)}`);
+    res.end();
+  });
 };

@@ -3,8 +3,9 @@ import { renderRoutes } from "react-router-config";
 import Header from "./components/Header";
 
 import { ApolloProvider } from "react-apollo";
-import client from "./Apollo";
+import initApolloClient from "../helpers/createCache";
 
+const client = initApolloClient({ isServerSide: false });
 const App = ({ route }) => {
   return (
     <ApolloProvider client={client}>
@@ -17,6 +18,5 @@ const App = ({ route }) => {
 };
 
 export default {
-  component: App,
-  loadData: ({ dispatch }) => dispatch(fetchCurrentUser())
+  component: App
 };

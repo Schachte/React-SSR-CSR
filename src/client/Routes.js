@@ -17,7 +17,7 @@ export default [
         path: "/users"
       },
       {
-        component: QueryExample,
+        ...QueryExample,
         path: "/query"
       }
     ]
