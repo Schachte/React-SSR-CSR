@@ -191,27 +191,16 @@ var _Header = __webpack_require__(16);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _reactApollo = __webpack_require__(7);
-
-var _createCache = __webpack_require__(8);
-
-var _createCache2 = _interopRequireDefault(_createCache);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var client = (0, _createCache2.default)({ isServerSide: false });
 var App = function App(_ref) {
   var route = _ref.route;
 
   return _react2.default.createElement(
-    _reactApollo.ApolloProvider,
-    { client: client },
-    _react2.default.createElement(
-      "div",
-      null,
-      _react2.default.createElement(_Header2.default, null),
-      (0, _reactRouterConfig.renderRoutes)(route.routes)
-    )
+    "div",
+    null,
+    _react2.default.createElement(_Header2.default, null),
+    (0, _reactRouterConfig.renderRoutes)(route.routes)
   );
 };
 
@@ -433,9 +422,7 @@ exports.default = function (req, res) {
   return (0, _reactSsr.getDataFromTree)(App).then(function () {
     var content = (0, _server.renderToString)(App);
     var initialState = client.extract();
-    console.log(initialState);
     var html = _react2.default.createElement(Html, { content: content, state: initialState });
-    console.log(initialState);
     res.status(200);
     res.send("<!doctype html>\n" + (0, _server.renderToStaticMarkup)(html));
     res.end();

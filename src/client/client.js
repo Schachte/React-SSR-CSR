@@ -5,11 +5,16 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./Routes";
 import { renderRoutes } from "react-router-config";
+import { ApolloProvider } from "react-apollo";
+import initApolloClient from "../helpers/createCache";
 
-console.log("This is getting called");
+const client = initApolloClient({ isServerSide: false });
 ReactDOM.hydrate(
-  <BrowserRouter>
-    <div>{renderRoutes(Routes)}</div>
-  </BrowserRouter>,
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <div>{renderRoutes(Routes)}</div>
+    </BrowserRouter>
+  </ApolloProvider>,
+
   document.querySelector("#root")
 );

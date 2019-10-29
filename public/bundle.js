@@ -29944,17 +29944,27 @@ var _Routes2 = _interopRequireDefault(_Routes);
 
 var _reactRouterConfig = __webpack_require__(239);
 
+var _reactApollo = __webpack_require__(552);
+
+var _createCache = __webpack_require__(558);
+
+var _createCache2 = _interopRequireDefault(_createCache);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Startup point for the clientside application
-console.log("This is getting called");
+var client = (0, _createCache2.default)({ isServerSide: false });
 _reactDom2.default.hydrate(_react2.default.createElement(
-  _reactRouterDom.BrowserRouter,
-  null,
+  _reactApollo.ApolloProvider,
+  { client: client },
   _react2.default.createElement(
-    "div",
+    _reactRouterDom.BrowserRouter,
     null,
-    (0, _reactRouterConfig.renderRoutes)(_Routes2.default)
+    _react2.default.createElement(
+      "div",
+      null,
+      (0, _reactRouterConfig.renderRoutes)(_Routes2.default)
+    )
   )
 ), document.querySelector("#root"));
 
@@ -71490,27 +71500,16 @@ var _Header = __webpack_require__(551);
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _reactApollo = __webpack_require__(552);
-
-var _createCache = __webpack_require__(558);
-
-var _createCache2 = _interopRequireDefault(_createCache);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var client = (0, _createCache2.default)({ isServerSide: false });
 var App = function App(_ref) {
   var route = _ref.route;
 
   return _react2.default.createElement(
-    _reactApollo.ApolloProvider,
-    { client: client },
-    _react2.default.createElement(
-      "div",
-      null,
-      _react2.default.createElement(_Header2.default, null),
-      (0, _reactRouterConfig.renderRoutes)(route.routes)
-    )
+    "div",
+    null,
+    _react2.default.createElement(_Header2.default, null),
+    (0, _reactRouterConfig.renderRoutes)(route.routes)
   );
 };
 

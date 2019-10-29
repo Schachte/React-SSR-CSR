@@ -41,9 +41,7 @@ export default (req, res) => {
   return getDataFromTree(App).then(() => {
     const content = renderToString(App);
     const initialState = client.extract();
-    console.log(initialState);
     const html = <Html content={content} state={initialState} />;
-    console.log(initialState);
     res.status(200);
     res.send(`<!doctype html>\n${renderToStaticMarkup(html)}`);
     res.end();
