@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -158,7 +158,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _templateObject = _taggedTemplateLiteral(["\n  {\n    users {\n      id\n      name\n    }\n  }\n"], ["\n  {\n    users {\n      id\n      name\n    }\n  }\n"]);
 
-var _graphqlTag = __webpack_require__(15);
+var _graphqlTag = __webpack_require__(13);
 
 var _graphqlTag2 = _interopRequireDefault(_graphqlTag);
 
@@ -187,7 +187,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterConfig = __webpack_require__(5);
 
-var _Header = __webpack_require__(16);
+var _Header = __webpack_require__(14);
 
 var _Header2 = _interopRequireDefault(_Header);
 
@@ -222,95 +222,18 @@ module.exports = require("react-router-dom");
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-apollo");
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+__webpack_require__(8);
 
-var _apolloClient = __webpack_require__(17);
-
-var _apolloClient2 = _interopRequireDefault(_apolloClient);
-
-var _apolloLinkSchema = __webpack_require__(18);
-
-var _apolloCacheInmemory = __webpack_require__(19);
-
-var _graphqlTools = __webpack_require__(20);
-
-var _typeDefs = __webpack_require__(21);
-
-var _typeDefs2 = _interopRequireDefault(_typeDefs);
-
-var _resolvers = __webpack_require__(22);
-
-var _resolvers2 = _interopRequireDefault(_resolvers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var initApolloClient = function initApolloClient(_ref) {
-  var isServerSide = _ref.isServerSide;
-
-  var client = void 0;
-
-  var schema = (0, _graphqlTools.makeExecutableSchema)({
-    typeDefs: _typeDefs2.default,
-    resolvers: _resolvers2.default
-  });
-
-  // TODO: Shrink this code to construct in one call
-  if (!isServerSide) {
-    console.log("Initializing the clientside cache");
-    client = new _apolloClient2.default({
-      connectToDevTools: true,
-      link: new _apolloLinkSchema.SchemaLink({ schema: schema }),
-      cache: new _apolloCacheInmemory.InMemoryCache({
-        dataIdFromObject: function dataIdFromObject(object) {
-          return object.id || null;
-        }
-      })
-    });
-  } else {
-    console.log("Initializing the serverside cache");
-    client = new _apolloClient2.default({
-      ssrMode: true,
-      connectToDevTools: true,
-      link: new _apolloLinkSchema.SchemaLink({ schema: schema }),
-      cache: new _apolloCacheInmemory.InMemoryCache({
-        dataIdFromObject: function dataIdFromObject(object) {
-          return object.id || null;
-        }
-      })
-    });
-  }
-  return client;
-};
-
-exports.default = initApolloClient;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(10);
-
-var _express = __webpack_require__(11);
+var _express = __webpack_require__(9);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _renderer = __webpack_require__(12);
+var _renderer = __webpack_require__(10);
 
 var _renderer2 = _interopRequireDefault(_renderer);
 
@@ -329,19 +252,19 @@ app.listen(3000, function () {
 });
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-polyfill");
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -355,36 +278,36 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Routes = __webpack_require__(13);
+var _Routes = __webpack_require__(11);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
-var _server = __webpack_require__(25);
+var _server = __webpack_require__(16);
 
 var _reactRouterDom = __webpack_require__(6);
 
 var _reactRouterConfig = __webpack_require__(5);
 
-var _serializeJavascript = __webpack_require__(26);
+var _serializeJavascript = __webpack_require__(17);
 
 var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
 
-var _createCache = __webpack_require__(8);
+var _createCache = __webpack_require__(18);
 
 var _createCache2 = _interopRequireDefault(_createCache);
 
-var _reactSsr = __webpack_require__(27);
+var _reactSsr = __webpack_require__(26);
 
 var _App = __webpack_require__(4);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _reactApollo = __webpack_require__(7);
+var _reactApollo = __webpack_require__(27);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (req, res) {
-  var client = (0, _createCache2.default)({ isServerSide: true });
+  var client = (0, _createCache2.default)({ isClient: false });
   var App = _react2.default.createElement(
     _reactApollo.ApolloProvider,
     { client: client },
@@ -414,7 +337,8 @@ exports.default = function (req, res) {
           dangerouslySetInnerHTML: {
             __html: "window.__APOLLO_STATE__=" + JSON.stringify(state).replace(/</g, "\\u003c") + ";"
           }
-        })
+        }),
+        _react2.default.createElement("script", { src: "bundle.js" })
       )
     );
   };
@@ -430,7 +354,7 @@ exports.default = function (req, res) {
 };
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -442,7 +366,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _HomePage = __webpack_require__(14);
+var _HomePage = __webpack_require__(12);
 
 var _HomePage2 = _interopRequireDefault(_HomePage);
 
@@ -450,7 +374,7 @@ var _App = __webpack_require__(4);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _UsersListPage = __webpack_require__(24);
+var _UsersListPage = __webpack_require__(15);
 
 var _UsersListPage2 = _interopRequireDefault(_UsersListPage);
 
@@ -472,7 +396,7 @@ exports.default = [_extends({}, _App2.default, {
 })];
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -499,7 +423,7 @@ var HomePage = function HomePage() {
     _react2.default.createElement(
       "span",
       null,
-      Math.random()
+      "Home"
     ),
     _react2.default.createElement(_QueryExample2.default, null)
   );
@@ -510,13 +434,13 @@ exports.default = {
 };
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-tag");
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -548,11 +472,6 @@ var Header = function Header() {
       null,
       _react2.default.createElement(
         _reactRouterDom.Link,
-        { to: "/query" },
-        "Query"
-      ),
-      _react2.default.createElement(
-        _reactRouterDom.Link,
         { to: "/users" },
         "Users"
       )
@@ -563,89 +482,7 @@ var Header = function Header() {
 exports.default = Header;
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-module.exports = require("apollo-client");
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-module.exports = require("apollo-link-schema");
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = require("apollo-cache-inmemory");
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-module.exports = require("graphql-tools");
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var typeDefs = "\ntype User {\n  id: Int\n  name: String\n}\n\ntype Query {\n  users: [User]\n}\n";
-
-exports.default = typeDefs;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _axios = __webpack_require__(23);
-
-var _axios2 = _interopRequireDefault(_axios);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var getUsers = function getUsers() {
-  return _axios2.default.get("http://localhost:3001/users").then(function (res) {
-    return res.data;
-  });
-};
-
-var resolvers = {
-  Query: {
-    users: function users(root, args, context, info) {
-      return getUsers().then(function (users) {
-        if (!users) {
-          return null;
-        }
-        return users;
-      });
-    }
-  }
-};
-
-exports.default = resolvers;
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = require("axios");
-
-/***/ }),
-/* 24 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -707,22 +544,166 @@ exports.default = {
 };
 
 /***/ }),
-/* 25 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 26 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("serialize-javascript");
 
 /***/ }),
-/* 27 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _apolloClient = __webpack_require__(19);
+
+var _apolloClient2 = _interopRequireDefault(_apolloClient);
+
+var _apolloLinkSchema = __webpack_require__(20);
+
+var _apolloCacheInmemory = __webpack_require__(21);
+
+var _graphqlTools = __webpack_require__(22);
+
+var _typeDefs = __webpack_require__(23);
+
+var _typeDefs2 = _interopRequireDefault(_typeDefs);
+
+var _resolvers = __webpack_require__(24);
+
+var _resolvers2 = _interopRequireDefault(_resolvers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initApolloClient = function initApolloClient(_ref) {
+  var isClient = _ref.isClient;
+
+  var schema = (0, _graphqlTools.makeExecutableSchema)({
+    typeDefs: _typeDefs2.default,
+    resolvers: _resolvers2.default
+  });
+
+  var cache = new _apolloCacheInmemory.InMemoryCache({
+    dataIdFromObject: function dataIdFromObject(object) {
+      return object.id || null;
+    }
+  });
+
+  var client = new _apolloClient2.default({
+    link: new _apolloLinkSchema.SchemaLink({ schema: schema }),
+    cache: isClient ? cache.restore(window.__APOLLO_STATE__) : cache,
+    ssrMode: !isClient
+  });
+
+  return client;
+};
+
+exports.default = initApolloClient;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("apollo-client");
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = require("apollo-link-schema");
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = require("apollo-cache-inmemory");
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = require("graphql-tools");
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var typeDefs = "\ntype User {\n  id: Int\n  name: String\n}\n\ntype Query {\n  users: [User]\n}\n";
+
+exports.default = typeDefs;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _axios = __webpack_require__(25);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getUsers = function getUsers() {
+  return _axios2.default.get("http://localhost:3001/users").then(function (res) {
+    return res.data;
+  });
+};
+
+var resolvers = {
+  Query: {
+    users: function users(root, args, context, info) {
+      return getUsers().then(function (users) {
+        if (!users) {
+          return null;
+        }
+        return users;
+      });
+    }
+  }
+};
+
+exports.default = resolvers;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = require("axios");
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("@apollo/react-ssr");
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-apollo");
 
 /***/ })
 /******/ ]);

@@ -6,35 +6,22 @@ import { makeExecutableSchema } from "graphql-tools";
 import typeDefs from "../graphql/typeDefs";
 import resolvers from "../graphql/resolvers";
 
-const initApolloClient = ({ isServerSide }) => {
-  let client;
-
+const initApolloClient = ({ isClient }) => {
   const schema = makeExecutableSchema({
     typeDefs,
     resolvers
   });
 
-  // TODO: Shrink this code to construct in one call
-  if (!isServerSide) {
-    console.log("Initializing the clientside cache");
-    client = new ApolloClient({
-      connectToDevTools: true,
-      link: new SchemaLink({ schema }),
-      cache: new InMemoryCache({
-        dataIdFromObject: object => object.id || null
-      })
-    });
-  } else {
-    console.log("Initializing the serverside cache");
-    client = new ApolloClient({
-      ssrMode: true,
-      connectToDevTools: true,
-      link: new SchemaLink({ schema }),
-      cache: new InMemoryCache({
-        dataIdFromObject: object => object.id || null
-      })
-    });
-  }
+  const cache = new InMemoryCache({
+    dataIdFromObject: object => object.id || null
+  });
+
+  const client = new ApolloClient({
+    link: new SchemaLink({ schema }),
+    cache: isClient ? cache.restore(window.__APOLLO_STATE__) : cache,
+    ssrMode: !isClient
+  });
+
   return client;
 };
 

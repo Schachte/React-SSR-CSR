@@ -8,13 +8,13 @@ import { renderRoutes } from "react-router-config";
 import { ApolloProvider } from "react-apollo";
 import initApolloClient from "../helpers/createCache";
 
-const client = initApolloClient({ isServerSide: false });
+const client = initApolloClient({ isClient: true });
+
 ReactDOM.hydrate(
   <ApolloProvider client={client}>
     <BrowserRouter>
       <div>{renderRoutes(Routes)}</div>
     </BrowserRouter>
   </ApolloProvider>,
-
   document.querySelector("#root")
 );

@@ -11,7 +11,7 @@ import { ApolloProvider } from "react-apollo";
 import { renderToStaticMarkup } from "react-dom/server";
 
 export default (req, res) => {
-  const client = initApolloClient({ isServerSide: true });
+  const client = initApolloClient({ isClient: false });
   const App = (
     <ApolloProvider client={client}>
       <StaticRouter location={req.path} context={{}}>
@@ -33,6 +33,7 @@ export default (req, res) => {
               )};`
             }}
           />
+          <script src="bundle.js"></script>
         </body>
       </html>
     );
